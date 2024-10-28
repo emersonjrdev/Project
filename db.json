@@ -1,36 +1,31 @@
 {
-    "contatos": [
-        {
-            "id": "1",
-            "nome": "João silva",
-            "telefone": "32421424"
-        },
-        {
-            "id": "2",
-            "nome": "João Pedro",
-            "telefone": "546563424"
-        },
-        {
-            "id": "3",
-            "nome": "Ricks",
-            "telefone": "768878678"
-        }
-    ],
-    "faq" : [
+  "contatos": [
     {
-        "id": 1,
-        "pergunta": "O que é JSON Server?",
-        "resposta": "JSON Server é uma ferramenta que permite..."
+      "id": "6b0c",
+      "nome": "emersinho",
+      "telefone": "554654545"
     },
     {
-        "id": 2,
-        "pergunta": "Como instalar o JSON Server?",
-        "resposta": "Você pode instalar o JSON Server usando o npm com..."
-    },
-    {
-        "id": 3,
-        "pergunta": "Posso usar o JSON Server em produção?",
-        "resposta": "JSON Server é otimo para desenvolvimento..."
+      "id": "6557",
+      "nome": "Emerson",
+      "telefone": "40028922"
     }
-   ]
+  ],
+  "faq": [
+    {
+      "id": "1",
+      "pergunta": "O que é JSON Server?",
+      "resposta": "JSON Server é uma ferramenta que permite..."
+    },
+    {
+      "id": "2",
+      "pergunta": "Como instalar o JSON Server?",
+      "resposta": "Você pode instalar o JSON Server usando o npm com..."
+    },
+    {
+      "id": "3",
+      "pergunta": "Posso usar o JSON Server em produção?",
+      "resposta": "JSON Server é otimo para desenvolvimento..."
+    }
+  ]
 }

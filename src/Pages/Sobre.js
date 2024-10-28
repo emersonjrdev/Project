@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Button, Alert } from "react-native";
 import axios from "axios";
 
 export default function () {
@@ -30,6 +30,33 @@ export default function () {
       });
   };
 
+  // Função para excluir um contato
+  const excluirContato = (id) => {
+    Alert.alert(
+      "Confirmar Exclusão",
+      "Tem certeza de que deseja excluir este contato?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: () => {
+            axios
+              .delete(`http://10.0.2.2:3000/contatos/${id}`)
+              .then(() => {
+                Alert.alert("Contato excluído com sucesso");
+                setContatos(contatos.filter((contato) => contato.id !== id)); // Remove o contato da lista
+              })
+              .catch((error) => {
+                console.error("Erro ao excluir contato", error);
+                Alert.alert("Erro ao excluir contato");
+              });
+          },
+        },
+      ]
+    );
+  };
+
   useEffect(() => {
     listContatos();
     listFaq();
@@ -41,10 +68,11 @@ export default function () {
         {/* Lista de Contatos */}
         <Text style={styles.title}>Lista de Contatos</Text>
         {contatos.length > 0 ? (
-          contatos.map((contato, index) => (
-            <View key={index} style={styles.contatoItem}>
+          contatos.map((contato) => (
+            <View key={contato.id} style={styles.contatoItem}>
               <Text>{contato.nome}</Text>
               <Text>{contato.telefone}</Text>
+              <Button title="Excluir" color="red" onPress={() => excluirContato(contato.id)} />
             </View>
           ))
         ) : (
@@ -54,8 +82,8 @@ export default function () {
         {/* Lista de FAQ */}
         <Text style={styles.title}>FAQ</Text>
         {faq.length > 0 ? (
-          faq.map((item, index) => (
-            <View key={index} style={styles.faqItem}>
+          faq.map((item) => (
+            <View key={item.id} style={styles.faqItem}>
               <Text style={styles.pergunta}>{item.pergunta}</Text>
               <Text>{item.resposta}</Text>
             </View>
