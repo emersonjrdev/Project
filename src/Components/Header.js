@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function Header() {
   return (
     <View style={styles.topo}>
-      <Text style={styles.tituloHeader}>InfoSass</Text>
+      <Text style={styles.tituloHeader}>TechPoint</Text>
     </View>
   );
 }
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   topo: {
     width: '100%',
     height: 120,
-    backgroundColor: '#3b5998', // Cor sólida de fundo
+    backgroundColor: 'red', // Cor sólida de fundo
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 2,

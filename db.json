@@ -1,26 +1,38 @@
 {
-  "contatos": [
+  "smartphones": [
     {
-      "nome": "Emersinho Jr",
-      "telefone": "40028922",
-      "id": "6557"
+      "marca": "Iphone",
+      "modelo": "14",
+      "id": "2952"
+    },
+    {
+      "marca": "Samsung",
+      "modelo": "A35",
+      "id": "9731"
+    },
+    {
+      "id": "b83b",
+      "marca": "Xiaomi",
+      "modelo": "Redmi Note 12s"
     }
   ],
-  "faq": [
+  "notebooks": [
     {
       "id": "1",
-      "pergunta": "O que é JSON Server?",
-      "resposta": "JSON Server é uma ferramenta que permite..."
+      "marca": "Dell",
+      "modelo": "Inspiron 15"
     },
     {
-      "id": "2",
-      "pergunta": "Como instalar o JSON Server?",
-      "resposta": "Você pode instalar o JSON Server usando o npm com..."
-    },
+      "marca": "Acer",
+      "modelo": "Aspire Nitro 5",
+      "id": "1094"
+    }
+  ],
+  "acessorios": [
     {
-      "id": "3",
-      "pergunta": "Posso usar o JSON Server em produção?",
-      "resposta": "JSON Server é otimo para desenvolvimento..."
+      "id": "cc0d",
+      "nome": "Dell",
+      "tipo": "Teclado"
     }
   ]
 }
