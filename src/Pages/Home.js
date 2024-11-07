@@ -1,50 +1,96 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
-import { Video } from 'expo-av';
+import { View, Text, ScrollView, StyleSheet, Image, FlatList } from "react-native";
 import Card from "../Components/Card";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function Home() {
   const navigation = useNavigation();
 
+  // Lista de celulares populares
+  const celularesPopulares = [
+    {
+      id: '1',
+      title: "Samsung S23 Ultra",
+      imageUri: "https://images.kabum.com.br/produtos/fotos/sync_mirakl/422462/Smartphone-Samsung-Galaxy-S23-Ultra-5G-256GB-12GB-RAM-Octa-Core-C-mera-Qu-drupla-200MP-Selfie-12MP-Tela-6-8-Caneta-S-Pen-Verde_1723226702_g.jpg",
+      content: "Samsung",
+    },
+    {
+      id: '2',
+      title: "Samsung S24 Ultra",
+      imageUri: "https://images.samsung.com/is/image/samsung/p6pim/pt/2401/gallery/pt-galaxy-s24-s928-489596-sm-s928bzoheub-539355002?$650_519_PNG$",
+      content: "Samsung",
+    },
+    {
+      id: '3',
+      title: "iPhone 14 Pro",
+      imageUri: "https://lwcenter.com.br/wp-content/uploads/2023/02/14-branco.png",
+      content: "Apple",
+    },
+  ];
+
+  // Lista de acessórios populares
+  const acessoriosPopulares = [
+    {
+      id: '1',
+      title: "Fone de Ouvido Bluetooth",
+      imageUri: "https://www.eletronicafaria.com.br/3889-large_default/fone-de-ouvido-bluetooth-airdots-2-xiaomi.jpg",
+      content: "Qualidade de som incrível",
+    },
+    {
+      id: '2',
+      title: "Carregador Portátil",
+      imageUri: "https://tudosobreprodutos.com.br/img/carregador-portatil-samsung-eb-p000b-10-00mah_1_.png",
+      content: "Carregamento rápido e eficiente",
+    },
+  ];
+
   return (
     <ScrollView style={styles.background}>
-      <View style={styles.container}>
-        {/* Banner promocional com vídeo local */}
-        <Text style={styles.tituloPrincipal}>Bem-vindo à Tech Point!</Text>
-        <Video
-          style={styles.banner}
-          source={require('../assets/banner.mp4')}
-          resizeMode="contain"
-          isLooping
-          shouldPlay
+      <View style={styles.header}>
+        <Image
+          style={styles.profilePic}
+          source={{ uri: 'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/10/shrek-e1696623069422.jpeg' }}
         />
-        
-        <Text style={styles.subtitulo}>A melhor loja de eletrônicos para você!</Text>
+        <Text style={styles.greeting}>Olá, Emerson!</Text>
+        <Icon name="search" size={24} color="#333" style={styles.searchIcon} />
+      </View>
 
-        {/* Seção de produtos em destaque */}
-        <Text style={styles.tituloInfo}>Produtos em destaque</Text>
-        <Card
-          title="Smartphones"
-          imageUri="https://d8vlg9z1oftyc.cloudfront.net/ailos/image/product/d90363dda3fe8c9e52b46082f5d0c98120230801093146/original/celular-motorola-e22-tela-de-6-5-camera-16-mpx-128gb-4gb-e-cor-preta_6999.png" 
-          content="Descubra os últimos lançamentos em smartphones."
-          buttonText="Ver Smartphones"
-          onPress={() => navigation.navigate('Smartphones')}
-        />
-        <Card
-          title="Notebooks"
-          imageUri="https://t17208.vtexassets.com/arquivos/ids/163534/nave_notebook_gamer_i5_rtx_3050_lunar_gm5ageo_Diagonal_Aberto_1000x1000.png?v=638346428925830000" 
-          content="Encontre o notebook perfeito para o seu dia a dia."
-          buttonText="Ver Notebooks"
-          onPress={() => navigation.navigate('Notebooks')}
-        />
-        <Card
-          title="Acessórios"
-          imageUri="https://worldshoptb.com/wp-content/uploads/2021/05/img-worldshop-banner-site.png" 
-          content="Tudo o que você precisa em acessórios para seu dispositivo."
-          buttonText="Ver Acessórios"
-          onPress={() => navigation.navigate('Acessorios')}
-        />
+      {/* Seção de celulares populares */}
+      <Text style={styles.sectionTitle}>Celulares populares</Text>
+      <FlatList
+        horizontal
+        data={celularesPopulares}
+        renderItem={({ item }) => (
+          <View style={{ marginHorizontal: 10 }}>
+            <Card
+              title={item.title}
+              imageUri={item.imageUri}
+              content={item.content}
+              buttonText="Detalhes"
+              onPress={() => navigation.navigate('DetalhesCelular', { ...item })}
+            />
+          </View>
+        )}
+        keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 10 }}
+      />
+
+      {/* Seção de acessórios populares */}
+      <Text style={styles.sectionTitle}>Acessórios populares</Text>
+      <View style={styles.cardList}>
+        {acessoriosPopulares.map(item => (
+          <View key={item.id} style={{ marginBottom: 20 }}>
+            <Card
+              title={item.title}
+              imageUri={item.imageUri}
+              content={item.content}
+              buttonText="Detalhes"
+              onPress={() => navigation.navigate('DetalhesAcessorio', { ...item })}
+            />
+          </View>
+        ))}
       </View>
     </ScrollView>
   );
@@ -53,43 +99,39 @@ export default function Home() {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#e0f7fa',
+    backgroundColor: '#ffffff',
   },
-  container: {
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
-    backgroundColor: "#ffffffdd",
-    borderRadius: 15,
-    margin: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
-  banner: {
-    width: "100%",
-    height: 220,
-    borderRadius: 12,
-    marginBottom: 20,
+  profilePic: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
   },
-  tituloPrincipal: {
-    fontWeight: "bold",
-    fontSize: 26,
-    textAlign: "center",
-    color: "#00796b",
-    marginVertical: 15,
-  },
-  subtitulo: {
+  greeting: {
     fontSize: 18,
-    color: "#00695c",
-    textAlign: "center",
-    marginBottom: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    flex: 1,
   },
-  tituloInfo: {
+  searchIcon: {
+    padding: 10,
+  },
+  sectionTitle: {
     fontSize: 22,
-    fontWeight: "bold",
-    color: "#004d40",
-    marginVertical: 20,
-    textAlign: "left",
+    fontWeight: 'bold',
+    color: '#333',
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  cardList: {
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
 });

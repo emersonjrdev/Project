@@ -1,38 +1,3 @@
 {
-  "smartphones": [
-    {
-      "marca": "Iphone",
-      "modelo": "14",
-      "id": "2952"
-    },
-    {
-      "marca": "Samsung",
-      "modelo": "A35",
-      "id": "9731"
-    },
-    {
-      "id": "b83b",
-      "marca": "Xiaomi",
-      "modelo": "Redmi Note 12s"
-    }
-  ],
-  "notebooks": [
-    {
-      "id": "1",
-      "marca": "Dell",
-      "modelo": "Inspiron 15"
-    },
-    {
-      "marca": "Acer",
-      "modelo": "Aspire Nitro 5",
-      "id": "1094"
-    }
-  ],
-  "acessorios": [
-    {
-      "id": "cc0d",
-      "nome": "Dell",
-      "tipo": "Teclado"
-    }
-  ]
+  "pedidos": []
 }
