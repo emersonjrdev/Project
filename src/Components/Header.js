@@ -13,14 +13,13 @@ const styles = StyleSheet.create({
   topo: {
     width: '100%',
     height: 120,
-    backgroundColor: 'red', // Cor sólida de fundo
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomColor: '#192f6a', // Borda inferior para dar estilo
   },
   tituloHeader: {
-    color: 'white',
+    color: 'black',
     fontSize: 28,
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.75)', // Sombra no texto
@@ -28,5 +27,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
     textTransform: 'uppercase',
     letterSpacing: 2,
+    fontFamily: "monospace",
+    marginTop: 25
   },
 });

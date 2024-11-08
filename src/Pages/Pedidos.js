@@ -1,61 +1,88 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import axios from 'axios'; // Utilizando axios para acessar o DB
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import axios from 'axios';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export default function Pedidos({ navigation }) {
+export default function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
+  const [pedidosConfirmados, setPedidosConfirmados] = useState([]);
 
   useEffect(() => {
-    // Carregar os pedidos do DB.json
     const fetchPedidos = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/pedidos');
+        const response = await axios.get('http://10.0.2.2:3000/pedidos');
         setPedidos(response.data);
+
+        const responseConfirmados = await axios.get('http://10.0.2.2:3000/pedidosConfirmados');
+        setPedidosConfirmados(responseConfirmados.data);
       } catch (error) {
-        alert('Erro ao carregar os pedidos.');
+        console.error('Erro ao buscar pedidos:', error);
       }
     };
 
     fetchPedidos();
   }, []);
 
-  // Função para excluir um pedido
   const deletePedido = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/pedidos/${id}`);
-      setPedidos(pedidos.filter(pedido => pedido.id !== id)); // Atualiza o estado
+      await axios.delete(`http://10.0.2.2:3000/pedidos/${id}`);
+      setPedidos(pedidos.filter(pedido => pedido.id !== id));
+      Alert.alert("Sucesso", "Pedido excluído com sucesso!");
     } catch (error) {
-      alert('Erro ao excluir o pedido.');
+      console.error('Erro ao excluir pedido:', error);
+      Alert.alert("Erro", "Não foi possível excluir o pedido.");
     }
   };
 
-  // Função para editar um pedido
-  const editPedido = (pedido) => {
-    navigation.navigate('EditarPedido', { pedido });
+  const confirmarPedido = async (pedido) => {
+    try {
+      await axios.delete(`http://10.0.2.2:3000/pedidos/${pedido.id}`);
+      await axios.post('http://10.0.2.2:3000/pedidosConfirmados', { ...pedido, status: 'Confirmado' });
+
+      setPedidos(pedidos.filter(p => p.id !== pedido.id));
+      setPedidosConfirmados([...pedidosConfirmados, { ...pedido, status: 'Confirmado' }]);
+      Alert.alert("Confirmado", "Pedido confirmado com sucesso!");
+    } catch (error) {
+      console.error('Erro ao confirmar pedido:', error);
+      Alert.alert("Erro", "Não foi possível confirmar o pedido.");
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Meus Pedidos</Text>
+      <Text style={styles.title}>Pedidos Realizados</Text>
       <FlatList
         data={pedidos}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardContent}>{item.content}</Text>
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => deletePedido(item.id)}
-            >
-              <Text style={styles.buttonText}>Excluir</Text>
+          <View style={styles.pedidoContainer}>
+            <Image source={{ uri: item.imageUri }} style={styles.pedidoImage} />
+            <View style={styles.pedidoInfo}>
+              <Text style={styles.pedidoTitle}>{item.title}</Text>
+              <Text>Status: {item.status}</Text>
+            </View>
+            <TouchableOpacity onPress={() => confirmarPedido(item)}>
+              <Icon name="checkmark-circle-outline" size={24} color="green" style={styles.icon} />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={() => editPedido(item)}
-            >
-              <Text style={styles.buttonText}>Editar</Text>
+            <TouchableOpacity onPress={() => deletePedido(item.id)}>
+              <Icon name="trash-outline" size={24} color="red" style={styles.icon} />
             </TouchableOpacity>
+          </View>
+        )}
+      />
+
+      {/* Seção de Pedidos Confirmados */}
+      <Text style={styles.confirmadosTitle}>Pedidos Confirmados</Text>
+      <FlatList
+        data={pedidosConfirmados}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.pedidoContainer}>
+            <Image source={{ uri: item.imageUri }} style={styles.pedidoImage} />
+            <View style={styles.pedidoInfo}>
+              <Text style={styles.pedidoTitle}>{item.title}</Text>
+              <Text>Status: Confirmado</Text>
+            </View>
           </View>
         )}
       />
@@ -67,46 +94,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center',
     marginBottom: 20,
   },
-  card: {
-    backgroundColor: '#f9f9f9',
-    padding: 15,
-    marginBottom: 15,
-    borderRadius: 8,
-    elevation: 2,
+  confirmadosTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 30,
+    marginBottom: 10,
   },
-  cardTitle: {
+  pedidoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  pedidoImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 5,
+    marginRight: 15,
+  },
+  pedidoInfo: {
+    flex: 1,
+  },
+  pedidoTitle: {
     fontSize: 18,
     fontWeight: 'bold',
   },
-  cardContent: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  deleteButton: {
-    backgroundColor: '#ff4d4d',
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 5,
-    alignItems: 'center',
-  },
-  editButton: {
-    backgroundColor: '#4d94ff',
-    paddingVertical: 10,
-    borderRadius: 8,
-    marginTop: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
+  icon: {
+    marginLeft: 10,
   },
 });

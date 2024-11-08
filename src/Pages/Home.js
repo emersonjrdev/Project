@@ -1,11 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, ScrollView, StyleSheet, Image, FlatList } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Image, FlatList, TouchableOpacity, Alert } from "react-native";
 import Card from "../Components/Card";
 import Icon from 'react-native-vector-icons/Ionicons';
+import Footer from "../Components/Footer"; // Importar o Footer
+import axios from 'axios';
 
 export default function Home() {
   const navigation = useNavigation();
+  const [user, setUser] = useState(null); // Estado para armazenar os dados do usuário
+
+  useEffect(() => {
+    // Função para buscar os dados do usuário do JSON Server
+    axios.get('http://localhost:3000/users/1')  // Supondo que o ID do usuário seja 1
+      .then(response => {
+        setUser(response.data);  // Atualiza o estado com os dados do usuário
+      })
+      .catch(error => {
+        console.error('Erro ao buscar usuário:', error);
+      });
+  }, []);
+
+  // Função para editar o perfil
+  const editProfile = () => {
+    navigation.navigate('Perfil', { user });  // Passa os dados do usuário para a página de perfil
+  };
+
+  // Função para excluir o perfil
+  const deleteProfile = () => {
+    Alert.alert(
+      "Excluir Perfil",
+      "Tem certeza de que deseja excluir seu perfil?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Excluir",
+          onPress: () => {
+            axios.delete(`http://localhost:3000/users/1`)  // Excluir o perfil do JSON Server
+              .then(() => {
+                Alert.alert("Perfil excluído", "Seu perfil foi excluído com sucesso.");
+                navigation.navigate('Welcome');  // Redireciona para a tela de boas-vindas
+              })
+              .catch((error) => {
+                console.error("Erro ao excluir o perfil:", error);
+              });
+          },
+        },
+      ]
+    );
+  };
 
   // Lista de celulares populares
   const celularesPopulares = [
@@ -46,53 +92,62 @@ export default function Home() {
   ];
 
   return (
-    <ScrollView style={styles.background}>
-      <View style={styles.header}>
-        <Image
-          style={styles.profilePic}
-          source={{ uri: 'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/10/shrek-e1696623069422.jpeg' }}
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.background}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={editProfile}>
+            {user && (
+              <Image
+                style={styles.profilePic}
+                source={{ uri: user.profilePic }}
+              />
+            )}
+          </TouchableOpacity>
+          <Text style={styles.greeting}>Olá, {user ? user.name : 'Carregando...'}</Text>
+          <Icon name="search" size={24} color="#333" style={styles.searchIcon} />
+        </View>
+
+        {/* Seção de celulares populares */}
+        <Text style={styles.sectionTitle}>Celulares populares</Text>
+        <FlatList
+          horizontal
+          data={celularesPopulares}
+          renderItem={({ item }) => (
+            <View style={{ marginHorizontal: 10 }}>
+              <Card
+                title={item.title}
+                imageUri={item.imageUri}
+                content={item.content}
+                buttonText="Detalhes"
+                onPress={() => navigation.navigate('DetalhesCelular', { ...item })}
+              />
+            </View>
+          )}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 10 }}
         />
-        <Text style={styles.greeting}>Olá, Emerson!</Text>
-        <Icon name="search" size={24} color="#333" style={styles.searchIcon} />
-      </View>
 
-      {/* Seção de celulares populares */}
-      <Text style={styles.sectionTitle}>Celulares populares</Text>
-      <FlatList
-        horizontal
-        data={celularesPopulares}
-        renderItem={({ item }) => (
-          <View style={{ marginHorizontal: 10 }}>
-            <Card
-              title={item.title}
-              imageUri={item.imageUri}
-              content={item.content}
-              buttonText="Detalhes"
-              onPress={() => navigation.navigate('DetalhesCelular', { ...item })}
-            />
-          </View>
-        )}
-        keyExtractor={item => item.id}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 10 }}
-      />
+        {/* Seção de acessórios populares */}
+        <Text style={styles.sectionTitle}>Acessórios populares</Text>
+        <View style={styles.cardList}>
+          {acessoriosPopulares.map(item => (
+            <View key={item.id} style={{ marginBottom: 20 }}>
+              <Card
+                title={item.title}
+                imageUri={item.imageUri}
+                content={item.content}
+                buttonText="Detalhes"
+                onPress={() => navigation.navigate('DetalhesAcessorio', { ...item })}
+              />
+            </View>
+          ))}
+        </View>
+      </ScrollView>
 
-      {/* Seção de acessórios populares */}
-      <Text style={styles.sectionTitle}>Acessórios populares</Text>
-      <View style={styles.cardList}>
-        {acessoriosPopulares.map(item => (
-          <View key={item.id} style={{ marginBottom: 20 }}>
-            <Card
-              title={item.title}
-              imageUri={item.imageUri}
-              content={item.content}
-              buttonText="Detalhes"
-              onPress={() => navigation.navigate('DetalhesAcessorio', { ...item })}
-            />
-          </View>
-        ))}
-      </View>
-    </ScrollView>
+      {/* Footer */}
+      <Footer currentScreen="Home" />
+    </View>
   );
 }
 

@@ -1,39 +1,56 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 
 export default function DetalhesCelular({ route, navigation }) {
-  // Desestruturando os dados do celular passados pela navegação
   const { title, imageUri, content } = route.params;
+
+  const handleBuy = async () => {
+    try {
+      const url = 'http://10.0.2.2:3000/pedidos'; // Ajuste conforme necessário
+
+      const response = await axios.post(url, {
+        title,
+        imageUri,
+        content,
+        status: 'Em andamento', // Status inicial do pedido
+      });
+
+      if (response.status === 201) {
+        alert('Pedido realizado com sucesso!');
+      } else {
+        alert('Erro ao realizar o pedido.');
+      }
+
+      navigation.goBack(); // Volta para a página anterior
+    } catch (error) {
+      console.error('Erro ao enviar o pedido:', error);
+      alert('Erro ao realizar o pedido. Verifique sua conexão com a internet e tente novamente.');
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {/* Barra superior com ícones */}
       <View style={styles.topBar}>
         <Icon name="arrow-back" size={24} color="#333" onPress={() => navigation.goBack()} />
         <Icon name="bookmark-outline" size={24} color="#333" />
       </View>
 
-      {/* Imagem do celular */}
       <Image source={{ uri: imageUri }} style={styles.image} />
-
-      {/* Título do celular */}
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.author}>{content}</Text>
 
-      {/* Avaliação */}
       <View style={styles.ratingContainer}>
         <Text style={styles.rating}>4.5</Text>
         <Icon name="star" size={18} color="#FFD700" />
         <Text style={styles.ratingTotal}>/ 5.0</Text>
       </View>
 
-      {/* Descrição */}
       <Text style={styles.description}>
         Um smartphone de alto desempenho, ideal para quem busca uma experiência completa com câmeras poderosas e tela de alta resolução.
       </Text>
 
-      {/* Botões de ações */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Visualizar</Text>
@@ -43,8 +60,7 @@ export default function DetalhesCelular({ route, navigation }) {
         </TouchableOpacity>
       </View>
 
-      {/* Botão de comprar */}
-      <TouchableOpacity style={styles.buyButton}>
+      <TouchableOpacity style={styles.buyButton} onPress={handleBuy}>
         <Text style={styles.buyButtonText}>Comprar Agora</Text>
       </TouchableOpacity>
     </View>
