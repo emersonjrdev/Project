@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { View, Text, ScrollView, StyleSheet, Image, FlatList, TouchableOpacity, Alert } from "react-native";
 import Card from "../Components/Card";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,23 +10,26 @@ export default function Home() {
   const navigation = useNavigation();
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        const name = await AsyncStorage.getItem('userName');
-        const profileImage = await AsyncStorage.getItem('userProfileImage');
-        
-        setUser({
-          name: name || 'Usuário',
-          profileImage: profileImage || 'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/10/shrek-e1696623069422.jpeg'
-        });
-      } catch (error) {
-        console.error('Erro ao carregar dados do usuário:', error);
-      }
-    };
+  // Carregar os dados do usuário sempre que a tela for focada
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadUserData = async () => {
+        try {
+          const name = await AsyncStorage.getItem('userName');
+          const profileImage = await AsyncStorage.getItem('userProfileImage');
+          
+          setUser({
+            name: name || 'Usuário',
+            profileImage: profileImage || 'https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2023/10/shrek-e1696623069422.jpeg'
+          });
+        } catch (error) {
+          console.error('Erro ao carregar dados do usuário:', error);
+        }
+      };
 
-    loadUserData();
-  }, []);
+      loadUserData();
+    }, [])
+  );
 
   const editProfile = () => {
     navigation.navigate('Perfil', { user });

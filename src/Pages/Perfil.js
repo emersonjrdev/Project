@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios'; // Importando axios para a requisição HTTP
+import axios from 'axios'; 
+import { useNavigation } from '@react-navigation/native'; // Importando useNavigation
 
 export default function Perfil() {
+  const navigation = useNavigation(); // Hook para navegação
+
   const [userData, setUserData] = useState({
     name: '',
     email: '',
@@ -37,12 +40,10 @@ export default function Perfil() {
 
   const handleSaveChanges = async () => {
     try {
-      // Atualizar os dados no AsyncStorage
       await AsyncStorage.setItem('userName', userData.name);
       await AsyncStorage.setItem('userPhone', userData.phone);
       await AsyncStorage.setItem('userProfileImage', userData.profileImage);
       
-      // Atualizar os dados no DB (supondo que o usuário tenha ID 1 no banco)
       await axios.put('http://10.0.2.2:3000/users/43f7', {
         name: userData.name,
         phone: userData.phone,
@@ -51,16 +52,25 @@ export default function Perfil() {
       
       Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
       setIsEditing(false);
+      navigation.goBack(); // Retorna para a tela anterior (Home)
     } catch (error) {
       console.error('Erro ao salvar dados do usuário:', error);
       Alert.alert('Erro', 'Não foi possível salvar as alterações.');
     }
   };
 
+  const handleLogout = async () => {
+    await AsyncStorage.clear(); // Limpa todos os dados do usuário
+    navigation.reset({ index: 0, routes: [{ name: 'Welcome' }] }); // Redireciona para a página de boas-vindas
+  };
+
   return (
     <View style={styles.container}>
-      <Image style={styles.profilePic} source={{ uri: userData.profileImage }} />
-      
+      <Image 
+        style={styles.profilePic} 
+        source={{ uri: userData.profileImage || 'https://cdn-icons-png.flaticon.com/512/1077/1077063.png' }} 
+      />
+
       {isEditing ? (
         <>
           <TextInput
@@ -92,6 +102,9 @@ export default function Perfil() {
           <Text style={styles.info}>Telefone: {userData.phone}</Text>
           <TouchableOpacity style={styles.button} onPress={() => setIsEditing(true)}>
             <Text style={styles.buttonText}>Editar Perfil</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Text style={styles.logoutButtonText}>Sair</Text>
           </TouchableOpacity>
         </>
       )}
@@ -138,6 +151,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  logoutButton: {
+    backgroundColor: '#555',
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  logoutButtonText: {
     color: '#fff',
     fontSize: 18,
   },
