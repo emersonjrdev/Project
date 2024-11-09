@@ -3,6 +3,8 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'reac
 import axios from 'axios';
 
 export default function RegisterScreen({ navigation }) {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,15 +16,15 @@ export default function RegisterScreen({ navigation }) {
       return;
     }
 
-    // Verifica se os campos foram preenchidos
-    if (!email || !password || !profileImage) {
+    if (!name || !phone || !email || !password || !profileImage) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
     try {
-      // Envia a requisição para criar o usuário com o caminho correto da API
       const response = await axios.post('http://10.0.2.2:3000/users', {
+        name,
+        phone,
         email,
         password,
         profileImage,
@@ -42,9 +44,25 @@ export default function RegisterScreen({ navigation }) {
 
       <TextInput
         style={styles.input}
+        placeholder="Nome"
+        value={name}
+        onChangeText={setName}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Telefone"
+        value={phone}
+        onChangeText={setPhone}
+        keyboardType="phone-pad"
+      />
+
+      <TextInput
+        style={styles.input}
         placeholder="E-mail"
         value={email}
         onChangeText={setEmail}
+        keyboardType="email-address"
       />
 
       <TextInput

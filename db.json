@@ -36,14 +36,21 @@
       "imageUri": "https://images.samsung.com/is/image/samsung/p6pim/pt/2401/gallery/pt-galaxy-s24-s928-489596-sm-s928bzoheub-539355002?$650_519_PNG$",
       "content": "Samsung",
       "status": "Confirmado"
+    },
+    {
+      "id": "f7e1",
+      "title": "Samsung S23 Ultra",
+      "imageUri": "https://images.kabum.com.br/produtos/fotos/sync_mirakl/422462/Smartphone-Samsung-Galaxy-S23-Ultra-5G-256GB-12GB-RAM-Octa-Core-C-mera-Qu-drupla-200MP-Selfie-12MP-Tela-6-8-Caneta-S-Pen-Verde_1723226702_g.jpg",
+      "content": "Samsung",
+      "status": "Confirmado"
     }
   ],
   "users": [
     {
-      "id": "6a08",
-      "email": "teste@gmail.com",
-      "password": "1234",
-      "profileImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ronaldinho_in_2019.jpg/200px-Ronaldinho_in_2019.jpg"
+      "name": "Emerson Jr",
+      "phone": "11 98765 - 4321",
+      "profileImage": "https://s3.amazonaws.com/blog.dentrodahistoria.com.br/wp-content/uploads/2022/09/14102229/relampago-mcqueen.png",
+      "id": "43f7"
     }
   ]
 }

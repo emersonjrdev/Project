@@ -6,35 +6,34 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Estado para controle de carregamento
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    // Verifica se os campos de email e senha foram preenchidos
     if (!email || !password) {
       Alert.alert('Erro', 'Por favor, preencha ambos os campos.');
       return;
     }
   
-    setIsLoading(true); // Ativa o loading enquanto a requisição é feita
+    setIsLoading(true);
   
     try {
       // Busca o usuário no JSON Server pelo email
       const response = await axios.get(`http://10.0.2.2:3000/users?email=${email}`);
-      const user = response.data[0];
-      console.log('Resposta do backend:', response.data); // Adicionado para depuração
+      const user = response.data.find(u => u.email === email); // Encontra o primeiro usuário com o email correspondente
+  
+      console.log('Resposta do backend:', response.data);
   
       if (user) {
-        console.log('Usuário encontrado:', user); // Adicionado para depuração
-        // Verifica se a senha está correta
+        console.log('Usuário encontrado:', user);
         if (user.password === password) {
           console.log('Login bem-sucedido:', user);
   
-          // Armazena o ID ou outros dados do usuário localmente, se necessário
+          // Armazena os dados do usuário no AsyncStorage
           await AsyncStorage.setItem('userId', user.id.toString());
           await AsyncStorage.setItem('userEmail', user.email);
-          if (user.profileImage) {
-            await AsyncStorage.setItem('userProfileImage', user.profileImage);
-          }
+          await AsyncStorage.setItem('userName', user.name);
+          await AsyncStorage.setItem('userPhone', user.phone);
+          await AsyncStorage.setItem('userProfileImage', user.profileImage);
   
           // Navega para a tela Home após login bem-sucedido
           navigation.navigate('Home');
@@ -48,7 +47,7 @@ export default function LoginScreen({ navigation }) {
       console.error('Erro no login:', error);
       Alert.alert('Erro', 'Ocorreu um erro ao tentar fazer login. Tente novamente.');
     } finally {
-      setIsLoading(false); // Desativa o loading após o processamento
+      setIsLoading(false);
     }
   };
 
