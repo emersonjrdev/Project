@@ -16,7 +16,7 @@ Hooks (useState, useEffect, useCallback): Gerenciamento de estado e ciclo de vid
 AsyncStorage: Armazenamento de dados local no dispositivo
 Axios: Comunicação com o backend local para operações de CRUD
 📕 Design Utilizado
-https://www.figma.com/design/TechPoint-UI-Electronics
+[https://www.figma.com/design/TechPoint-UI-Electronics](https://www.figma.com/community/file/1214222077546911862/ecommerce-app-community)
 
 ⚖ Direitos
 Todos os direitos são reservados ao desenvolvedor do projeto.
