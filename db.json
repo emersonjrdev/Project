@@ -1,72 +1,41 @@
 {
   "pedidos": [
     {
-      "id": "0cab",
-      "title": "Samsung S23 Ultra",
-      "imageUri": "https://images.kabum.com.br/produtos/fotos/sync_mirakl/422462/Smartphone-Samsung-Galaxy-S23-Ultra-5G-256GB-12GB-RAM-Octa-Core-C-mera-Qu-drupla-200MP-Selfie-12MP-Tela-6-8-Caneta-S-Pen-Verde_1723226702_g.jpg",
-      "content": "Samsung",
+      "id": "f294",
+      "title": "Fone de Ouvido Bluetooth",
+      "imageUri": "https://www.eletronicafaria.com.br/3889-large_default/fone-de-ouvido-bluetooth-airdots-2-xiaomi.jpg",
+      "content": "Qualidade de som incrível",
       "status": "Em andamento"
     }
   ],
   "pedidosConfirmados": [
     {
-      "id": "f9db",
-      "title": "Samsung S23 Ultra",
-      "imageUri": "https://images.kabum.com.br/produtos/fotos/sync_mirakl/422462/Smartphone-Samsung-Galaxy-S23-Ultra-5G-256GB-12GB-RAM-Octa-Core-C-mera-Qu-drupla-200MP-Selfie-12MP-Tela-6-8-Caneta-S-Pen-Verde_1723226702_g.jpg",
-      "content": "Samsung",
-      "status": "Confirmado"
-    },
-    {
-      "id": "f38a",
-      "title": "iPhone 14 Pro",
-      "imageUri": "https://lwcenter.com.br/wp-content/uploads/2023/02/14-branco.png",
-      "content": "Apple",
-      "status": "Confirmado"
-    },
-    {
-      "id": "6706",
+      "id": "92bf",
       "title": "Samsung S24 Ultra",
       "imageUri": "https://images.samsung.com/is/image/samsung/p6pim/pt/2401/gallery/pt-galaxy-s24-s928-489596-sm-s928bzoheub-539355002?$650_519_PNG$",
       "content": "Samsung",
       "status": "Confirmado"
     },
     {
-      "id": "f7e1",
-      "title": "Samsung S23 Ultra",
-      "imageUri": "https://images.kabum.com.br/produtos/fotos/sync_mirakl/422462/Smartphone-Samsung-Galaxy-S23-Ultra-5G-256GB-12GB-RAM-Octa-Core-C-mera-Qu-drupla-200MP-Selfie-12MP-Tela-6-8-Caneta-S-Pen-Verde_1723226702_g.jpg",
-      "content": "Samsung",
-      "status": "Confirmado"
-    },
-    {
-      "id": "5d21",
-      "title": "Fone de Ouvido Bluetooth",
-      "imageUri": "https://www.eletronicafaria.com.br/3889-large_default/fone-de-ouvido-bluetooth-airdots-2-xiaomi.jpg",
-      "content": "Qualidade de som incrível",
+      "id": "438d",
+      "title": "iPhone 14 Pro",
+      "imageUri": "https://lwcenter.com.br/wp-content/uploads/2023/02/14-branco.png",
+      "content": "Apple",
       "status": "Confirmado"
     }
   ],
   "users": [
     {
-      "name": "Joao Chicken",
-      "phone": "11 4002-8922",
-      "profileImage": "https://i1.sndcdn.com/artworks-1BP5a907Q01eLbWN-AcVNiw-t1080x1080.jpg",
-      "id": "43f7"
-    },
-    {
-      "id": "08cf",
-      "name": "Luquinhas",
+      "name": "Emersinho",
       "phone": "11 98765-4321",
-      "email": "teste2@gmail.com",
-      "password": "12345",
-      "profileImage": "https://www.esportelandia.com.br/wp-content/uploads/2024/05/Dwaney-Johnson-The-Rock-Mark-Kerr.png"
+      "profileImage": "https://www.esportelandia.com.br/wp-content/uploads/2024/05/Dwaney-Johnson-The-Rock-Mark-Kerr.png",
+      "id": "08cf"
     },
     {
-      "id": "1822",
-      "name": "Chicken",
-      "phone": "11 4002-8922",
-      "email": "chicken@gmail.com",
-      "password": "1234",
-      "profileImage": "https://i.pinimg.com/236x/49/c8/50/49c85006d874d8c37aa78b35265743e4.jpg"
+      "name": "Kawan Wig",
+      "phone": "323213",
+      "profileImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/LeBron_James_%2851959977144%29_%28cropped2%29.jpg/640px-LeBron_James_%2851959977144%29_%28cropped2%29.jpg",
+      "id": "c073"
     }
   ]
 }

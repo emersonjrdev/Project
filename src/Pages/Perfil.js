@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios'; 
-import { useNavigation } from '@react-navigation/native'; // Importando useNavigation
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Perfil() {
-  const navigation = useNavigation(); // Hook para navegação
+  const navigation = useNavigation();
 
   const [userData, setUserData] = useState({
+    id: '',
     name: '',
     email: '',
     phone: '',
@@ -19,12 +20,14 @@ export default function Perfil() {
   useEffect(() => {
     const loadUserData = async () => {
       try {
+        const id = await AsyncStorage.getItem('userId');
         const name = await AsyncStorage.getItem('userName');
         const email = await AsyncStorage.getItem('userEmail');
         const phone = await AsyncStorage.getItem('userPhone');
         const profileImage = await AsyncStorage.getItem('userProfileImage');
-        
+
         setUserData({
+          id: id || '', // Recupera o ID
           name: name || 'Nome do usuário',
           email: email || 'E-mail não disponível',
           phone: phone || 'Telefone não disponível',
@@ -43,16 +46,21 @@ export default function Perfil() {
       await AsyncStorage.setItem('userName', userData.name);
       await AsyncStorage.setItem('userPhone', userData.phone);
       await AsyncStorage.setItem('userProfileImage', userData.profileImage);
-      
-      await axios.put('http://10.0.2.2:3000/users/43f7', {
+
+      if (!userData.id) {
+        Alert.alert('Erro', 'ID do usuário não encontrado.');
+        return;
+      }
+
+      await axios.put(`http://10.0.2.2:3000/users/${userData.id}`, {
         name: userData.name,
         phone: userData.phone,
         profileImage: userData.profileImage,
       });
-      
+
       Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
       setIsEditing(false);
-      navigation.goBack(); // Retorna para a tela anterior (Home)
+      navigation.goBack();
     } catch (error) {
       console.error('Erro ao salvar dados do usuário:', error);
       Alert.alert('Erro', 'Não foi possível salvar as alterações.');
